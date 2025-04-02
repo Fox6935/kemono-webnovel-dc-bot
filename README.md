@@ -5,10 +5,13 @@ A Discord bot designed to fetch webnovel content from Kemono creator pages, comp
 ## Features
 
 - **Fetch Command**: Retrieve chapters from a Kemono creator by name (from a stored list) or URL, with options to specify the number of chapters or skip specific ones.
+- ![Image](https://github.com/user-attachments/assets/f6345126-3bbf-4d6e-aa0a-d880712af584)
+- ![Image](https://github.com/user-attachments/assets/982113d1-199f-40b7-b8d1-eb436ab22df0)
 - **Interactive Chapter Selection**: Browse and select chapters via a paginated Discord UI, with support for fetching additional pages dynamically.
 - **EPUB Generation**: Compile selected chapters into an EPUB file with embedded images, sent directly to the user’s DMs.
 - **Admin Commands**: Add or remove creators from a text-based list (`creators.txt`) with admin-only commands.
 - **Autocomplete**: Suggests creator names as you type for the fetch command.
+- ![Image](https://github.com/user-attachments/assets/48935721-9f0a-48f1-8b99-4159efec1ab9)
 - **Role-Based Access**: Restrict commands to specific roles and channels, configurable during setup.
 - **Logging**: Tracks bot activity and errors in a `bot.log` file.
 
