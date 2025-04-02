@@ -13,7 +13,6 @@ class GatewayFilter(logging.Filter):
     def filter(self, record):
         return not (record.name == "discord.gateway" and "RESUMED" in record.msg)
 
-# Set up logging with the filter
 handler = logging.FileHandler('bot.log')
 handler.setLevel(logging.INFO)
 handler.addFilter(GatewayFilter())
@@ -116,7 +115,10 @@ class ChapterSelectView(discord.ui.View):
         select.callback = self.on_select
         self.add_item(select)
 
-        all_button = discord.ui.Button(label="All on this page", style=discord.ButtonStyle.green)
+        # Check if all chapters on this page are selected
+        all_selected = all(i in self.selected_chapters for i in range(start_idx, end_idx))
+        all_button_label = "Deselect all on page" if all_selected else "Select all on page"
+        all_button = discord.ui.Button(label=all_button_label, style=discord.ButtonStyle.green)
         all_button.callback = self.on_all
         self.add_item(all_button)
 
@@ -153,12 +155,18 @@ class ChapterSelectView(discord.ui.View):
         page_indices = set(range(start_idx, end_idx))
         self.selected_chapters -= page_indices - selected
         self.selected_chapters |= selected
+        self.update_select()  # Refresh the UI after selection
         await interaction.response.edit_message(view=self)
 
     async def on_all(self, interaction: discord.Interaction):
         start_idx = self.page * self.per_page
         end_idx = min((self.page + 1) * self.per_page, len(self.chapters))
-        self.selected_chapters.update(range(start_idx, end_idx))
+        page_indices = set(range(start_idx, end_idx))
+        # If all are selected, deselect them; otherwise, select all
+        if all(i in self.selected_chapters for i in page_indices):
+            self.selected_chapters -= page_indices
+        else:
+            self.selected_chapters.update(page_indices)
         self.update_select()
         await interaction.response.edit_message(view=self)
 
@@ -427,6 +435,10 @@ async def check_role(interaction: discord.Interaction, require_admin=False):
         return True
     await interaction.response.send_message(f"You lack {'admin' if require_admin else 'required'} role.", ephemeral=True, delete_after=10)
     return False
+
+@client.event
+async def on_disconnect():
+    logging.info("Bot disconnected from Discord Gateway. Reconnect attempts may follow...")
 
 @client.event
 async def on_ready():
