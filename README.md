@@ -94,3 +94,10 @@ A Discord bot designed to fetch webnovel content from Kemono creator pages, comp
 - **Bot Not Responding**: Check `bot.log` for errors, ensure the token is valid, and verify the bot has permissions in the server.
 - **No Chapters Found**: Confirm the Kemono URL is valid and the creator has public posts.
 - **Permission Denied**: Ensure your role matches the allowed/admin roles in `config.json`.
+
+## Future ideas maybe:
+- Use logs to identify most requested creators and prioritize those creators in auto-complete suggestions.
+- Make the add and remove creator commands optional during setup. (Pros - fewer commands and more flexibility. Cons - none, it's just optional now)
+- Add an (optional) option during setup to add an admin log channel to send bot logs.
+- Create an async que for high bot activity. Perhaps a command cooldown for users as well, just in case.
+- Low-priority - During setup, allow for a request to be sent to Kemono for an account favorites list and create the creators.txt file for auto-complete suggestions. (Would require entering login credentials.) This is easy enough to implement but it's an unfavorable solution to me.
